@@ -73,6 +73,9 @@ public class Library
             {
                 Console.WriteLine("Handling File Name : " + file.Name);
                 string destinationfolder = Destination + "/" + folder.ServerRelativeUrl;
+                try
+                {
+
                 Stream fs = Microsoft.SharePoint.Client.File.OpenBinaryDirect(site, file.ServerRelativeUrl).Stream;
                 byte[] binary = ReadFully(fs);
                 if (!Directory.Exists(destinationfolder))
@@ -83,6 +86,12 @@ public class Library
                 BinaryWriter writer = new BinaryWriter(stream);
                 writer.Write(binary);
                 writer.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
             }
         }
         public static byte[] ReadFully(Stream input)
